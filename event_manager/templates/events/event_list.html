@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Список мероприятий</title>
+            {% load static %}
+            <link rel="stylesheet" type="text/css" href="{% static
+            'events/css/styles.css' %}">
+        </head>
+        <body>
+            <h1>Список мероприятий</h1>
+            <p>Здесь будет отображаться список всех мероприятий.</p>
+            <a href="{% url 'events:home' %}">Вернуться на главную</a>
+        </body>
+    </html>

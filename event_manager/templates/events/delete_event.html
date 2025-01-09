@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Удалить мероприятие</title>
+            {% load static %}
+            <link rel="stylesheet" type="text/css" href="{% static
+            'events/css/styles.css' %}">
+        </head>
+        <body>
+            <h1>Удалить мероприятие</h1>
+            <p>Вы уверены, что хотите удалить мероприятие с ID: {{ event_id }}?
+            </p>
+            <form method="post">
+            {% csrf_token %}
+            <button type="submit">Да, удалить</button>
+            <a href="{% url 'events:event_detail' event_id=event_id
+            %}">Отмена</a>
+            </form>
+        </body>
+    </html>

@@ -4,10 +4,15 @@
             <title>Главная страница</title>
             {% load static %}
             <link rel="stylesheet" type="text/css" href="{% static
-            'events/css/styles.css' %}">
+        'events/css/styles.css' %}">
         </head>
         <body>
-            <h1>Добро пожаловать в нашу новую систему управления мероприятиями!
-            </h1>
+            <h1>Добро пожаловать на сайт мероприятий!</h1>
+            <nav>
+            <a href="{% url 'events:event_list' %}">Список мероприятий</a>
+            </nav>
         </body>
     </html>
+
+    <a href="{% url 'about:about' %}">О нас</a> |
+    <a href="{% url 'contact:contact' %}">Контакты</a>
