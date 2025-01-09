@@ -1,0 +1,13 @@
+{% extends 'events/base.html' %}
+{% block title %}О нас{% endblock %}
+{% block content %}
+<h1>О нашей компании</h1>
+<p>Наша компания занимается организацией мероприятий с 2010 года.</p>
+<p>Наша миссия — создавать незабываемые события для наших клиентов.</p>
+<h2>Наша команда</h2>
+<ul>
+{% for member in team %}
+<li>{{ member.name }} - {{ member.position }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

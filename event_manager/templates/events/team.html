@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-    <html>
-        <head>
-            <title>Команда</title>
-            {% load static %}
-            <link rel="stylesheet" type="text/css" href="{% static
-            'events/css/styles.css' %}">
-        </head>
-        <body>
-            <h1>Наша команда</h1>
-            <ul>
-            {% for member in team %}
-            <li>{{ member.name }} - {{ member.position }}</li>
-            {% endfor %}
-            </ul>
-            </body>
-    </html>
+{% extends 'events/base.html' %}
+{% block title %}Команда{% endblock %}
+{% block content %}
+<h1>Наша команда</h1>
+<ul>
+{% for member in team %}
+<li>{{ member.name }} - {{ member.position }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

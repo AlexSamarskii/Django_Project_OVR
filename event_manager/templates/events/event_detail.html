@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-    <html>
-        <head>
-            <title>Детали мероприятия</title>
-            {% load static %}
-            <link rel="stylesheet" type="text/css" href="{% static
-            'events/css/styles.css' %}">
-        </head>
-        <body>
-            <h1>Детали мероприятия</h1>
-            <p>Информация о мероприятии с ID: {{ event_id }}</p>
-            <a href="{% url 'events:event_list' %}">Вернуться к списку мероприятий</a>
-        </body>
-    </html>
+{% extends 'events/base.html' %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+<h1>{{ event.title }}</h1>
+<p><strong>Дата и время:</strong> {{ event.date }}</p>
+<p><strong>Место проведения:</strong> {{ event.location }}</p>
+<p><strong>Описание:</strong> {{ event.description }}</p>
+<p><strong>Организатор:</strong> {{ event.organizer }}</p>
+{% endblock %}
