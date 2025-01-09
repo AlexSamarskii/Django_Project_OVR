@@ -6,7 +6,10 @@
             </title>
             {% load static %}
             <link rel="stylesheet" href="{% static 'events/css/styles.css' %}">
-            </head>
+            <link rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.c
+            ss">
+        </head>
         <body>
             <nav>
                 <a href="{% url 'events:home' %}">Главная</a> |
@@ -21,5 +24,9 @@
             <!-- Основной контент будет вставлен здесь -->
             {% endblock %}
             </div>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.m
+            in.js"></script>
         </body>
     </html>

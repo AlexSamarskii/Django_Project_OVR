@@ -1,10 +1,32 @@
-from django.shortcuts import render
+
 from django.shortcuts import render, get_object_or_404, redirect
-from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 
+
+events = [
+    {'id': 1, 'title': 'Концерт классической музыки', 'date': '2023-11-10 19:00', 'description': 'Концерт с участием известных исполнителей.',
+    'location': 'Концертный зал', 'organizer': 'Иван Иванов', 'category':
+    'Музыка', 'comments': [
+    {'user': 'Пользователь1', 'comment': 'Потрясающее мероприятие!',
+    'created_at': '2023-11-11 10:00'},
+    {'user': 'Пользователь2', 'comment': 'Очень понравилось!',
+    'created_at': '2023-11-12 12:00'},
+    ]},
+]
+
+def event_detail(request, event_id):
+    event = next((item for item in events if item['id'] == event_id), None)
+    if event:
+        comments = event.get('comments', [])
+        return render(request, 'events/event_detail.html', {
+        'event': event,
+        'comments': comments,
+        'image': f'events/event_{event_id}.jpg',
+    })
+    else:
+        return render(request, 'events/event_not_found.html')
 
 def event_list(request):                                                                          
     return render(request, 'events/event_list.html')

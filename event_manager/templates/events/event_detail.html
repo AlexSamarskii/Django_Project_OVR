@@ -4,6 +4,22 @@
 <h1>{{ event.title }}</h1>
 <p><strong>Дата и время:</strong> {{ event.date }}</p>
 <p><strong>Место проведения:</strong> {{ event.location }}</p>
-<p><strong>Описание:</strong> {{ event.description }}</p>
-<p><strong>Организатор:</strong> {{ event.organizer }}</p>
+<p><strong>Категория:</strong> {{ event.category }}</p>
+{% if event.image %}
+<img src="{{ event.image }}" alt="{{ event.title }}" style="max-width:
+100%;">
+{% endif %}
+<p>{{ event.description }}</p>
+<h2>Отзывы</h2>
+{% if comments %}
+{% for comment in comments %}
+<div class="comment">
+<p><strong>{{ comment.user }}</strong> - <em>{{
+comment.created_at }}</em></p>
+<p>{{ comment.comment }}</p>
+</div>
+{% endfor %}
+{% else %}
+<p>Нет отзывов о данном мероприятии.</p>
+{% endif %}
 {% endblock %}

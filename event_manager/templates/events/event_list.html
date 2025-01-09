@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-    <html>
-        <head>
-            <title>Список мероприятий</title>
-            {% load static %}
-            <link rel="stylesheet" type="text/css" href="{% static
-            'events/css/styles.css' %}">
-        </head>
-        <body>
-            <h1>Список мероприятий</h1>
-            <p>Здесь будет отображаться список всех мероприятий.</p>
-            <a href="{% url 'events:home' %}">Вернуться на главную</a>
-        </body>
-    </html>
+{% extends 'events/base.html' %}
+{% block content %}
+<div class="container">
+<h1 class="mt-5">Мероприятия</h1>
+<div class="list-group">
+{% for event in events %}
+<a href="{% url 'events:event_detail' event.id %}"
+class="list-group-item list-group-item-action">
+<h5 class="mb-1">{{ event.title }}</h5>
+<small>{{ event.date }}</small>
+</a>
+{% empty %}
+<p>Нет доступных мероприятий.</p>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

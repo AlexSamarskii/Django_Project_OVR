@@ -1,17 +1,17 @@
 {% extends 'events/base.html' %}
 {% block title %}Домашняя страница{% endblock %}
 {% block content %}
-    <h1>Добро пожаловать на сайт мероприятий!</h1>
-    <p>Здесь вы найдете информацию о наших последних событиях.</p>
-    <h2>Предстоящие мероприятия</h2>
-    <ul>
-        {% for event in events %}
-        <li>
-        <a href="{% url 'events:event_detail' event.id %}">
-            {{event.title }}</a> - {{ event.date }}
-        </li>
-        {% empty %}
-        <li>Нет предстоящих мероприятий.</li>
-        {% endfor %}
-    </ul>
+<h1>Добро пожаловать на сайт мероприятий!</h1>
+<p>Здесь вы найдете информацию о наших последних событиях.</p>
+<h2>Предстоящие мероприятия</h2>
+<ul>
+{% for event in events %}
+<li>
+<a href="{% url 'events:event_detail' event.id %}">
+    {{event.title }}</a> - {{ event.date }}
+</li>
+{% empty %}
+<li>Нет предстоящих мероприятий.</li>
+{% endfor %}
+</ul>
 {% endblock %}
