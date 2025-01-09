@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Список пользователей</title>
+            {% load static %}
+            <link rel="stylesheet" type="text/css" href="{% static
+            'events/css/styles.css' %}">
+        </head>
+        <body>
+            <h1>Список зарегистрированных пользователей</h1>
+            <ul>
+            {% for user in users %}
+            <li>{{ user.username }} ({{ user.email }})</li>
+            {% empty %}
+            <li>Нет зарегистрированных пользователей.</li>
+            {% endfor %}
+            </ul>
+        </body>
+    </html>

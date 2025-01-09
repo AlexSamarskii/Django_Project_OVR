@@ -9,10 +9,17 @@
         <body>
             <h1>Добро пожаловать на сайт мероприятий!</h1>
             <nav>
-            <a href="{% url 'events:event_list' %}">Список мероприятий</a>
+                <a href="{% url 'events:home' %}">Главная</a> |
+                <a href="{% url 'events:services' %}">Услуги</a> |
+                <a href="{% url 'events:team' %}">Команда</a> |
+                <a href="{% url 'events:gallery' %}">Галерея</a> |
+                <a href="{% url 'events:event_list' %}">Список мероприятий</a>
+                <a href="{% url 'events:contact_us' %}">Свяжитесь с нами</a>
+                <a href="{% url 'events:user_list' %}">Пользователи</a>
+                <a href="{% url 'about:about' %}">О нас</a> |
+                <a href="{% url 'contact:contact' %}">Контакты</a>
             </nav>
         </body>
     </html>
 
-    <a href="{% url 'about:about' %}">О нас</a> |
-    <a href="{% url 'contact:contact' %}">Контакты</a>
+   
