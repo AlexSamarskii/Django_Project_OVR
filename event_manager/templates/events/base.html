@@ -19,8 +19,26 @@
                 <a href="{% url 'contact_us' %}">Свяжитесь с нами</a> |
                 <a href="{% url 'about' %}">О нас</a> |
                 <a href="{% url 'event_list' %}">Мероприятия</a>
+                <style>
+                    .hello {
+                        position: absolute;
+                        right: 0;
+                        top: 15px;
+                        right: 15px;
+                    }
+                </style>
+                <div class="hello">
+                    {% if user.is_authenticated %} Hello, {{ user.username }}! 
+                        {% csrf_token %}
+                        <a href="{% url 'logout' %}">Выйти</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">Войти</a>
+                        <a href="{% url 'signup' %}">Регистрация</a>
+                    {% endif %}
+            </div>
             </nav>
             <div class="content">
+    
             {% block content %}
             <!-- Основной контент будет вставлен здесь -->
             {% endblock %}

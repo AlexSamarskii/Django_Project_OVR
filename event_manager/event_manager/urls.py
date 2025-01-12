@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from events import views
+from django.contrib.auth import views as auth_views
 
 
 urlpatterns = [
@@ -35,6 +36,9 @@ urlpatterns = [
     path('events/<int:pk>/delete/', views.EventDeleteView.as_view(), name='delete_event'),
     path('events/export/csv/', views.export_events_csv, name='export_events_csv'),
     path('captcha/', include('captcha.urls')),
+    path('signup/', views.signup, name='signup'),
+    path('login/', auth_views.LoginView.as_view(template_name='events/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
 
 if settings.DEBUG:

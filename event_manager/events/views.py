@@ -14,6 +14,8 @@ from django.urls import reverse_lazy
 import csv
 from django.http import HttpResponse
 from .forms import ReviewForm
+from django.contrib.auth import login
+from .forms import SignUpForm
 
 #events = Event.objects.all().order_by('date')
 
@@ -168,3 +170,18 @@ def event_detail(request, event_id):
         'reviews': reviews,
         'review_form': review_form,
         })
+    
+    
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Регистрация прошла успешно!')
+            return redirect('events:home')
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки ниже.')
+    else:
+        form = SignUpForm()
+    return render(request, 'events/signup.html', {'form': form})
