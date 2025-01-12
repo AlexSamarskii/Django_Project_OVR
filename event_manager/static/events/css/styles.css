@@ -51,3 +51,12 @@ color: #4CAF50;
 .pagination span {
 margin: 0 5px;
 }
+
+.errorlist {
+color: red;
+list-style-type: none;
+}
+
+.errorlist li {
+margin-left: 0;
+}

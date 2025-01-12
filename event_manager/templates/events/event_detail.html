@@ -32,11 +32,30 @@ review.rating }}/5</p>
 <!-- Форма добавления отзыва -->
 <h2>Оставить отзыв</h2>
 <form method="post">
-{% csrf_token %}
-{{ review_form.non_field_errors }}
-{{ review_form.as_p }}
-<button type="submit">Отправить</button>
-</form>
+    {% csrf_token %}
+    {{ review_form.non_field_errors }}
+    <div>
+    {{ review_form.name.label_tag }}
+    {{ review_form.name }}
+    {{ review_form.name.errors }}
+    </div>
+    <div>
+    {{ review_form.email.label_tag }}
+    {{ review_form.email }}
+    {{ review_form.email.errors }}
+    </div>
+    <div>
+    {{ review_form.rating.label_tag }}
+    {{ review_form.rating }}
+    {{ review_form.rating.errors }}
+    </div>
+    <div>
+    {{ review_form.comment.label_tag }}
+    {{ review_form.comment }}
+    {{ review_form.comment.errors }}
+    </div>
+    <button type="submit">Отправить</button>
+    </form>
 <a href="{% url 'events:edit_event' event.id %}">Редактировать</a> |
 <a href="{% url 'events:delete_event' event.id %}" onclick="return
 confirm('Вы уверены, что хотите удалить это мероприятие?');">Удалить</a>

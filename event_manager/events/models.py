@@ -5,7 +5,8 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
-# from django_imagekit.models import ImageSpecField
+from django.core.validators import MaxLengthValidator
+#from imagekit.models import ImageSpecField
 # from imagekit.processors import ResizeToFill
 
 
@@ -63,7 +64,7 @@ class Review(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length = 254)
     rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])
-    comment = models.TextField()
+    comment = models.TextField(validators=[MaxLengthValidator(500)])
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

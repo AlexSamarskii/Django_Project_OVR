@@ -9,7 +9,7 @@
                     <img src="{{ event.main_image.url }}" alt="{{ event.title
                     }}">
                 {% endif %}
-                <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}
+                <a href="{% url 'event_detail' event.id %}">{{ event.title }}
                 </a> -
                 {{ event.date|date:"d.m.Y H:i" }} -
                 {{ event.location }} -

@@ -1,4 +1,5 @@
 
+from django.forms import ValidationError
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 from django.views.generic import ListView
@@ -147,17 +148,21 @@ def event_detail(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     reviews = event.reviews.all().order_by('-created_at')
     if request.method == 'POST':
-        review_form = ReviewForm(request.POST)
-        if review_form.is_valid():
-            review = review_form.save(commit=False)
-            review.event = event
-            review.save()
-            messages.success(request, 'Ваш отзыв успешно добавлен.')
-            return redirect('events:event_detail', event_id=event.id)
-        else:
-            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+        review_form = ReviewForm(request.POST, event=event)
+        try:
+            if review_form.is_valid():
+                review = review_form.save(commit=False)
+                review.event = event
+                review.save()
+                messages.success(request, 'Ваш отзыв успешно добавлен.')
+                return redirect('events:event_detail',
+                event_id=event.id)
+            else:
+                messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+        except ValidationError as e:
+            review_form.add_error(None, e)
     else:
-        review_form = ReviewForm()
+        review_form = ReviewForm(event=event)
     return render(request, 'events/event_detail.html', {
         'event': event,
         'reviews': reviews,
