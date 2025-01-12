@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Category, Event, Registration, Review, Comment, Profile, Venue, Sponsor
 from django.utils.html import format_html
+
     
 @admin.action(description='Удалить выбранные мероприятия')
 def delete_selected_events(modeladmin, request, queryset):

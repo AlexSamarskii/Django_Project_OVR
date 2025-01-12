@@ -4,7 +4,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from events import views
+from rest_framework import routers
+from rest_framework.authtoken import views as drf_views
 
+router = routers.DefaultRouter()
+router.register(r'api/events', views.EventViewSet)
 
 app_name = 'events'
 
@@ -25,6 +29,9 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', auth_views.LoginView.as_view(template_name='events/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('api/events/', views.api_event_list, name='api_event_list'),
+    path('api/events/<int:pk>/', views.api_event_detail,
+    name='api_event_detail'),
 ]
 
 if settings.DEBUG:
@@ -36,4 +43,10 @@ urlpatterns += [
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='events/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='events/password_reset_confirm.html'), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='events/password_reset_complete.html'), name='password_reset_complete'),
+]
+
+urlpatterns += router.urls
+
+urlpatterns += [
+    path('api-token-auth/', drf_views.obtain_auth_token, name='api_token_auth'),
 ]
