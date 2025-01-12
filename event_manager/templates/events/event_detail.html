@@ -2,10 +2,19 @@
 {% block title %}{{ event.title }}{% endblock %}
 {% block content %}
 <h1>{{ event.title }}</h1>
-<p><strong>Дата и время:</strong> {{ event.date|date:"d.m.Y H:i" }}</p>
+<p><strong>Дата и время:</strong> {{ event.date|date:"d.m.Y H:i" }}
+</p>
 <p><strong>Место:</strong> {{ event.location }}</p>
 <p><strong>Категория:</strong> {{ event.category.name }}</p>
 <p>{{ event.description }}</p>
+{% if event.main_image %}
+<img src="{{ event.main_image.url }}" alt="{{ event.title }}"
+style="max-width: 100%; height: auto;">
+{% endif %}
+{% if event.document %}
+<p><a href="{{ event.document.url }}">Скачать дополнительную
+информацию</a></p>
+{% endif %}
 <h2>Отзывы</h2>
 {% if event.reviews.exists %}
 {% for review in event.reviews.all %}

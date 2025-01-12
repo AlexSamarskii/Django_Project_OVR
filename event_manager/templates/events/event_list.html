@@ -5,14 +5,18 @@
     <ul>
         {% for event in events %}
             <li>
-            <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}
-            </a> -
-            {{ event.date|date:"d.m.Y H:i" }} -
-            {{ event.location }} -
-            Категория: {{ event.category.name }}
+                {% if event.main_image %}
+                    <img src="{{ event.main_image_thumbnail.url }}" alt="{{ event.title
+                    }}">
+                {% endif %}
+                <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}
+                </a> -
+                {{ event.date|date:"d.m.Y H:i" }} -
+                {{ event.location }} -
+                Категория: {{ event.category.name }}
             </li>
             {% empty %}
-            <li>Нет доступных мероприятий.</li>
+                <li>Нет доступных мероприятий.</li>
         {% endfor %}
 </ul>
 {% endblock %}

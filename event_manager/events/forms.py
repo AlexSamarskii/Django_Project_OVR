@@ -6,7 +6,7 @@ class EventForm(forms.ModelForm):
     
     class Meta:
         model = Event
-        fields = ['title', 'description', 'date', 'location', 'category']
+        fields = ['title', 'description', 'date', 'location', 'category', 'main_image', 'document']
         widgets = {
         'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }

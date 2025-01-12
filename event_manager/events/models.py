@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils import timezone
+from django.core.validators import FileExtensionValidator
+from django_imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class Category(models.Model):
@@ -24,6 +28,19 @@ class Event(models.Model):
     date = models.DateTimeField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='events')
     location = models.CharField(max_length=200)
+    main_image = models.ImageField(upload_to='event_images/', blank=True, null=True)
+    main_image_thumbnail = ImageSpecField(
+        source='main_image',
+        processors=[ResizeToFill(100, 50)],
+        format='JPEG',
+        options={'quality': 60}
+        )
+    document = models.FileField(
+        upload_to='event_documents/',
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(allowed_extensions=['pdf',
+        'docx'])])
     
     def __str__(self):
         return self.title

@@ -26,6 +26,7 @@ urlpatterns = [
     path('about/', include(('about.urls', 'about'), namespace='about')),
     path('contact/', include(('contact.urls', 'contact'), namespace='contact')),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
     document_root=settings.MEDIA_ROOT)

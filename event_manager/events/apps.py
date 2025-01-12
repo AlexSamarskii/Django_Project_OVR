@@ -7,7 +7,6 @@ class EventsConfig(AppConfig):
     name = 'events'
     
     def ready(self):
-        print(os.environ)
         print("Метод ready() вызван")
         if os.environ.get('RUN_MAIN', None) != 'true':
             print("RUN_MAIN не равен 'true', метод ready() не будет выполняться полностью")

@@ -1,6 +1,11 @@
-{% extends 'events/base.html' %}
+{% extends 'base.html' %}
 {% block title %}Галерея{% endblock %}
 {% block content %}
-<h1>Галерея мероприятий</h1>
-<p>Фотографии и видео с наших мероприятий.</p>
+<h1>Галерея</h1>
+{% for event in events %}
+    {% if event.main_image %}
+        <img src="{{ event.main_image.url }}" alt="{{ event.title }}"
+        style="max-width: 100%; height: auto;">
+    {% endif %}
+{% endfor %}
 {% endblock %}

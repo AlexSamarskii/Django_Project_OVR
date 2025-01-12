@@ -104,7 +104,8 @@ def contact_us(request):
     return render(request, 'events/contact_us.html')
 
 def gallery(request):
-    return render(request, 'events/gallery.html')
+    events = Event.objects.all().order_by('date')
+    return render(request, 'events/gallery.html', {'events': events})
 
 def contact_us(request):
     return render(request, 'events/contact_us.html')
