@@ -13,16 +13,12 @@ from django.urls import reverse_lazy
 import csv
 from django.http import HttpResponse
 
-events = [
-    {'id': 1, 'title': 'Концерт классической музыки', 'date': '2023-11-10 19:00', 'description': 'Концерт с участием известных исполнителей.',
-    'location': 'Концертный зал', 'organizer': 'Иван Иванов', 'category':
-    'Музыка', 'comments': [
-    {'user': 'Пользователь1', 'comment': 'Потрясающее мероприятие!',
-    'created_at': '2023-11-11 10:00'},
-    {'user': 'Пользователь2', 'comment': 'Очень понравилось!',
-    'created_at': '2023-11-12 12:00'},
-    ]},
-]
+#events = Event.objects.all().order_by('date')
+
+def event_list(request):
+    events = Event.objects.all().order_by('date')
+    print(f"Количество мероприятий: {events.count()}")
+    return render(request, 'events/event_list.html', {'events': events})
 
 def export_events_csv(request):
     events = Event.objects.all()
@@ -53,11 +49,6 @@ def event_detail(request, event_id):
         'event': event,
         'comments': comments
     })
-
-def event_list(request):    
-    events = Event.objects.all()                                                                      
-    return render(request, 'events/event_list.html', 
-                  context={'events': events})
 
 def add_event(request):
     if request.method == 'POST':

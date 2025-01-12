@@ -1,18 +1,18 @@
 {% extends 'events/base.html' %}
+{% block title %}Список мероприятий{% endblock %}
 {% block content %}
-    <div class="container">
-    <h1 class="mt-5">Мероприятия</h1>
-        <div class="list-group">
-            {% for event in events %}
-                <a href="{% url 'events:event_detail' event.id %}"
-                class="list-group-item list-group-item-action">
-                <h5 class="mb-1">{{ event.title }}</h5>
-                <small>{{ event.date }}</small>
-                </a>
-                <a href="{% url 'events:export_events_csv' %}">Экспортировать в CSV</a>
+    <h1>Список мероприятий</h1>
+    <ul>
+        {% for event in events %}
+            <li>
+            <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}
+            </a> -
+            {{ event.date|date:"d.m.Y H:i" }} -
+            {{ event.location }} -
+            Категория: {{ event.category.name }}
+            </li>
             {% empty %}
-                <p>Нет доступных мероприятий.</p>
-            {% endfor %}
-        </div>
-    </div>
+            <li>Нет доступных мероприятий.</li>
+        {% endfor %}
+</ul>
 {% endblock %}
