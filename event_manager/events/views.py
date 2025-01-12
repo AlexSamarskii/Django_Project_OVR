@@ -16,8 +16,58 @@ from django.http import HttpResponse
 from .forms import ReviewForm
 from django.contrib.auth import login
 from .forms import SignUpForm
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
 
 #events = Event.objects.all().order_by('date')
+
+class EventDeleteView(UserPassesTestMixin, DeleteView):
+    model = Event
+    template_name = 'events/delete_event.html'
+    success_url = reverse_lazy('events:event_list')
+    
+    def test_func(self):
+        event = self.get_object()
+        return self.request.user.is_authenticated and self.request.user == event.created_by
+    
+    def handle_no_permission(self):
+        return redirect('events:login')
+
+def is_admin(user):
+    return user.is_authenticated and user.is_staff
+
+def post_review(request, event):
+    review_form = ReviewForm(request.POST, event=event)
+    try:
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.event = event
+            review.user = request.user 
+            review.save()
+            messages.success(request, 'Ваш отзыв успешно добавлен.')
+            return redirect('events:event_detail', event_id=event.id)
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+    except ValidationError as e:
+        review_form.add_error(None, e)
+    return review_form 
+    
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    reviews = event.reviews.all().order_by('-created_at')
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('events:login')
+        review_form = post_review(request, event)
+    else:
+        review_form = ReviewForm(event=event)
+    return render(request, 'events/event_detail.html', {'event': event,
+                                                        'reviews': reviews,
+                                                        'review_form': review_form,
+                                                        })
 
 def event_list(request):
     events = Event.objects.all().order_by('date')
@@ -43,32 +93,27 @@ class EventDeleteView(DeleteView):
     
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-
-def event_detail(request, event_id):
-    print("event detail")
-    event = get_object_or_404(Event, id=event_id)
-    print("11", event)
-    comments = event.comments.all().order_by('-created_at')
-    return render(request, 'events/event_detail.html', {
-        'event': event,
-        'comments': comments
-    })
-
+    
+@permission_required('events.add_event', login_url='events:login')
+@user_passes_test(is_admin)
 def add_event(request):
     if request.method == 'POST':
         form = EventForm(request.POST)
         if form.is_valid():
             event = form.save()
-            print(type(event))
-            print(event.id)
+            event.created_by = request.user
+            event.save()
             messages.success(request, 'Мероприятие успешно добавлено.')
             return redirect('events:event_detail', event_id=event.id)
     else:
         form = EventForm()
     return render(request, 'events/add_event.html', {'form': form})
     
+@user_passes_test(is_admin)
 def edit_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
+    if event.created_by != request.user:
+        return redirect('events:event_detail', event_id=event.id)
     if request.method == 'POST':
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
@@ -146,30 +191,30 @@ def home(request):
 def about(request):
     return render(request, 'events/about.html', {'team': team_members})
 
-def event_detail(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
-    reviews = event.reviews.all().order_by('-created_at')
-    if request.method == 'POST':
-        review_form = ReviewForm(request.POST, event=event)
-        try:
-            if review_form.is_valid():
-                review = review_form.save(commit=False)
-                review.event = event
-                review.save()
-                messages.success(request, 'Ваш отзыв успешно добавлен.')
-                return redirect('events:event_detail',
-                event_id=event.id)
-            else:
-                messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
-        except ValidationError as e:
-            review_form.add_error(None, e)
-    else:
-        review_form = ReviewForm(event=event)
-    return render(request, 'events/event_detail.html', {
-        'event': event,
-        'reviews': reviews,
-        'review_form': review_form,
-        })
+# def event_detail(request, event_id):
+#     event = get_object_or_404(Event, id=event_id)
+#     reviews = event.reviews.all().order_by('-created_at')
+#     if request.method == 'POST':
+#         review_form = ReviewForm(request.POST, event=event)
+#         try:
+#             if review_form.is_valid():
+#                 review = review_form.save(commit=False)
+#                 review.event = event
+#                 review.save()
+#                 messages.success(request, 'Ваш отзыв успешно добавлен.')
+#                 return redirect('events:event_detail',
+#                 event_id=event.id)
+#             else:
+#                 messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+#         except ValidationError as e:
+#             review_form.add_error(None, e)
+#     else:
+#         review_form = ReviewForm(event=event)
+#     return render(request, 'events/event_detail.html', {
+#         'event': event,
+#         'reviews': reviews,
+#         'review_form': review_form,
+#         })
     
     
 def signup(request):

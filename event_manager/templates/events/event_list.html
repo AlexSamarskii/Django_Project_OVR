@@ -18,5 +18,8 @@
             {% empty %}
                 <li>Нет доступных мероприятий.</li>
         {% endfor %}
+        {% if user.is_authenticated and user.is_staff %}
+        <a href="{% url 'events:add_event' %}">Добавить мероприятие</a>
+        {% endif %}
 </ul>
 {% endblock %}

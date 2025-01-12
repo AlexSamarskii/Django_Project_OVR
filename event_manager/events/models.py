@@ -27,6 +27,7 @@ class Event(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     date = models.DateTimeField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='events')
     location = models.CharField(max_length=200)
     main_image = models.ImageField(upload_to='event_images/', blank=True, null=True)
@@ -59,6 +60,8 @@ class Registration(models.Model):
         return f'{self.user.username} зарегистрировался на {self.event.title}'
         
 class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True,
+        blank=True)
     event = models.ForeignKey('Event', related_name='reviews',
         on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
