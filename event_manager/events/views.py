@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from .forms import EventForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Event
+from .models import Event, Review
 from django.views.generic import DeleteView
 from django.urls import reverse_lazy
 import csv
@@ -25,9 +25,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import EventSerializer
+from .serializers import ReviewSerializer, ReviewCreateSerializer
 from .models import Event
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 #events = Event.objects.all().order_by('date')
 
@@ -98,6 +100,9 @@ def api_event_detail(request, pk):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    filterset_fields = ['date', 'location']
+    search_fields = ['title', 'description']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class EventListAPIView(generics.ListCreateAPIView):
     queryset = Event.objects.all()
@@ -106,6 +111,16 @@ class EventListAPIView(generics.ListCreateAPIView):
 class EventDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    
+class ReviewViewSet(viewsets.ModelViewSet):
+    serializer_class = ReviewSerializer
+    
+    def get_queryset(self):
+        return Review.objects.filter(event_id=self.kwargs['event_pk'])
+    
+    def perform_create(self, serializer):
+        event = get_object_or_404(Event, pk=self.kwargs['event_pk'])
+        serializer.save(event=event)
 
 def event_detail(request, event_id):
     event = get_object_or_404(Event, id=event_id)
