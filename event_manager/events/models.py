@@ -5,7 +5,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
-from django_imagekit.models import ImageSpecField
+from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
 
