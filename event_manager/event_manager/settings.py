@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'about',
     'contact',
     'imagekit',
+    'captcha',
 ]
 
 MIDDLEWARE = [

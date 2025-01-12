@@ -12,6 +12,7 @@ from django.views.generic import DeleteView
 from django.urls import reverse_lazy
 import csv
 from django.http import HttpResponse
+from .forms import ReviewForm
 
 #events = Event.objects.all().order_by('date')
 
@@ -141,3 +142,24 @@ def home(request):
     
 def about(request):
     return render(request, 'events/about.html', {'team': team_members})
+
+def event_detail(request, event_id):
+    event = get_object_or_404(Event, id=event_id)
+    reviews = event.reviews.all().order_by('-created_at')
+    if request.method == 'POST':
+        review_form = ReviewForm(request.POST)
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.event = event
+            review.save()
+            messages.success(request, 'Ваш отзыв успешно добавлен.')
+            return redirect('events:event_detail', event_id=event.id)
+        else:
+            messages.error(request, 'Пожалуйста, исправьте ошибки в форме.')
+    else:
+        review_form = ReviewForm()
+    return render(request, 'events/event_detail.html', {
+        'event': event,
+        'reviews': reviews,
+        'review_form': review_form,
+        })

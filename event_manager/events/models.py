@@ -5,8 +5,8 @@ from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
 from django.core.validators import FileExtensionValidator
-from django_imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
+# from django_imagekit.models import ImageSpecField
+# from imagekit.processors import ResizeToFill
 
 
 class Category(models.Model):
@@ -29,12 +29,12 @@ class Event(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='events')
     location = models.CharField(max_length=200)
     main_image = models.ImageField(upload_to='event_images/', blank=True, null=True)
-    main_image_thumbnail = ImageSpecField(
-        source='main_image',
-        processors=[ResizeToFill(100, 50)],
-        format='JPEG',
-        options={'quality': 60}
-        )
+    # main_image_thumbnail = ImageSpecField(
+    #     source='main_image',
+    #     processors=[ResizeToFill(100, 50)],
+    #     format='JPEG',
+    #     options={'quality': 60}
+    #     )
     document = models.FileField(
         upload_to='event_documents/',
         blank=True,
@@ -58,15 +58,16 @@ class Registration(models.Model):
         return f'{self.user.username} зарегистрировался на {self.event.title}'
         
 class Review(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE,
-    related_name='reviews')
-    user = models.ForeignKey(User, on_delete=models.CASCADE,
-    related_name='reviews')
-    rating = models.IntegerField()
+    event = models.ForeignKey('Event', related_name='reviews',
+        on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length = 254)
+    rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
-        return f'Отзыв {self.user.username} о {self.event.title}'
+        return f'Review by {self.name} for {self.event.title}'
     
     
 class Comment(models.Model):

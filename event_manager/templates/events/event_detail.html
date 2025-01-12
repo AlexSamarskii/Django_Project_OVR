@@ -16,18 +16,27 @@ style="max-width: 100%; height: auto;">
 информацию</a></p>
 {% endif %}
 <h2>Отзывы</h2>
-{% if event.reviews.exists %}
-{% for review in event.reviews.all %}
+{% if reviews %}
+{% for review in reviews %}
 <div>
-<p><strong>{{ review.user.username }}</strong> - Оценка: {{
+<p><strong>{{ review.name }}</strong> - Оценка: {{
 review.rating }}/5</p>
 <p>{{ review.comment }}</p>
-<p><em>{{ review.created_at|date:"d.m.Y H:i" }}</em></p>
+<p><em>{{ review.created_at|date:"d.m.Y H:i" }}</em>
+</p>
 </div>
 {% endfor %}
 {% else %}
 <p>Нет отзывов о данном мероприятии.</p>
 {% endif %}
+<!-- Форма добавления отзыва -->
+<h2>Оставить отзыв</h2>
+<form method="post">
+{% csrf_token %}
+{{ review_form.non_field_errors }}
+{{ review_form.as_p }}
+<button type="submit">Отправить</button>
+</form>
 <a href="{% url 'events:edit_event' event.id %}">Редактировать</a> |
 <a href="{% url 'events:delete_event' event.id %}" onclick="return
 confirm('Вы уверены, что хотите удалить это мероприятие?');">Удалить</a>

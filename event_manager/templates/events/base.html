@@ -24,6 +24,13 @@
             {% block content %}
             <!-- Основной контент будет вставлен здесь -->
             {% endblock %}
+            {% if messages %}
+                <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                </ul>
+                {% endif %}
             </div>
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script

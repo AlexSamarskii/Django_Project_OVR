@@ -6,7 +6,7 @@
         {% for event in events %}
             <li>
                 {% if event.main_image %}
-                    <img src="{{ event.main_image_thumbnail.url }}" alt="{{ event.title
+                    <img src="{{ event.main_image.url }}" alt="{{ event.title
                     }}">
                 {% endif %}
                 <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}
