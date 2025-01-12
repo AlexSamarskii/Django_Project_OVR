@@ -2,24 +2,24 @@
 {% block title %}{{ event.title }}{% endblock %}
 {% block content %}
 <h1>{{ event.title }}</h1>
-<p><strong>Дата и время:</strong> {{ event.date }}</p>
-<p><strong>Место проведения:</strong> {{ event.location }}</p>
-<p><strong>Категория:</strong> {{ event.category }}</p>
-{% if event.image %}
-<img src="{{ event.image }}" alt="{{ event.title }}" style="max-width:
-100%;">
-{% endif %}
+<p><strong>Дата и время:</strong> {{ event.date|date:"d.m.Y H:i" }}</p>
+<p><strong>Место:</strong> {{ event.location }}</p>
+<p><strong>Категория:</strong> {{ event.category.name }}</p>
 <p>{{ event.description }}</p>
 <h2>Отзывы</h2>
-{% if comments %}
-{% for comment in comments %}
-<div class="comment">
-<p><strong>{{ comment.user }}</strong> - <em>{{
-comment.created_at }}</em></p>
-<p>{{ comment.comment }}</p>
+{% if event.reviews.exists %}
+{% for review in event.reviews.all %}
+<div>
+<p><strong>{{ review.user.username }}</strong> - Оценка: {{
+review.rating }}/5</p>
+<p>{{ review.comment }}</p>
+<p><em>{{ review.created_at|date:"d.m.Y H:i" }}</em></p>
 </div>
 {% endfor %}
 {% else %}
 <p>Нет отзывов о данном мероприятии.</p>
 {% endif %}
+<a href="{% url 'events:edit_event' event.id %}">Редактировать</a> |
+<a href="{% url 'events:delete_event' event.id %}" onclick="return
+confirm('Вы уверены, что хотите удалить это мероприятие?');">Удалить</a>
 {% endblock %}

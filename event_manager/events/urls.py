@@ -13,4 +13,8 @@ urlpatterns = [
     path('gallery/', views.GalleryView.as_view(), name='gallery'),
     path('contact_us/', views.contact_us, name='contact_us'),
     path('about/', views.about, name='about'),
+    path('events/add/', views.add_event, name='add_event'),
+    path('events/<int:event_id>/edit/', views.edit_event, name='edit_event'),
+    path('events/<int:pk>/delete/', views.EventDeleteView.as_view(), name='delete_event'),
+    path('events/export/csv/', views.export_events_csv, name='export_events_csv'),
 ]

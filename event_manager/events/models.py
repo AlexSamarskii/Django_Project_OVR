@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
+
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -21,9 +23,13 @@ class Event(models.Model):
     description = models.TextField()
     date = models.DateTimeField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='events')
-    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='events')
+    location = models.CharField(max_length=200)
+    
     def __str__(self):
         return self.title
+        
+    def get_absolute_url(self):
+        return reverse('events:event_detail', args=[str(self.id)])
     
 class Registration(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,

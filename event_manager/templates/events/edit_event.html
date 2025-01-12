@@ -1,0 +1,12 @@
+{% extends 'events/base.html' %}
+{% block title %}Редактировать мероприятие{% endblock %}
+{% block content %}
+    <h1>Редактировать мероприятие: {{ event.title }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+    <button type="submit">Сохранить изменения</button>
+    </form>
+    <a href="{% url 'events:event_detail' event.id %}">Назад к
+    мероприятию</a>
+{% endblock %}

@@ -8,7 +8,7 @@ class CategoryAdmin(admin.ModelAdmin):
     
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'category', 'venue')
+    list_display = ('title', 'date', 'category', 'location')
     list_filter = ('category', 'date')
     search_fields = ('title', 'description')
     date_hierarchy = 'date'
